@@ -4,7 +4,7 @@ using System.Collections;
 public class WanderingAI : MonoBehaviour 
 {
 	public float speed = 3.0f;  // Wandering forward speed
-	public float obstacleRange = 2.0f;
+	public float obstacleRange = .05f;
 
     public float Force = 50.0f;
     public Vector3 Torque = new Vector3(100, 0, 0);
