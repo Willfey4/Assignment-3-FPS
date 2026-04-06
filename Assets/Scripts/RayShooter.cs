@@ -3,13 +3,18 @@ using System.Collections;
 
 public class RayShooter : MonoBehaviour 
 {
-	private Camera _camera;
+	public Transform origin;
+    private Camera _camera;
+    private LineRenderer line;
     private bool cursorLocked = false;
+    private Animator animator;
+    public GameObject hand;
 
 	void Start() 
     {
 		_camera = GetComponent<Camera>();
-
+        line = GetComponent<LineRenderer>();
+        animator = hand.GetComponent<Animator>();
         LockCursor();	
 	}
 
@@ -24,13 +29,18 @@ public class RayShooter : MonoBehaviour
 
     void Update() 
     {
+        
 		if (Input.GetMouseButtonDown(0) /* || Input.GetButton("Fire1")*/) 
         {
+            //animator.SetBool("Attack", true);
 			Vector3 point = new Vector3(_camera.pixelWidth/2, _camera.pixelHeight/2, 0);
 			Ray ray = _camera.ScreenPointToRay(point);
 			RaycastHit hit;
 			if (Physics.Raycast(ray, out hit)) 
             {
+                line.SetPosition(0, origin.position);
+                line.SetPosition(1, hit.point);
+                StartCoroutine(lineDelete());
 				GameObject hitObject = hit.transform.gameObject;
 
                 IReactiveTarget reactiveTarget = hitObject.GetComponent<IReactiveTarget>();
@@ -39,35 +49,6 @@ public class RayShooter : MonoBehaviour
                 {
                     reactiveTarget.ReactToHit();
                 }
-                else
-                {
-                    StartCoroutine(SphereIndicator(hit.point));
-                }
-
-                //ReactiveTarget target = hitObject.GetComponent<ReactiveTarget>();
-                //if (target != null) 
-                //            {
-                //	target.ReactToHit();
-                //} else 
-                //            {
-                //                ReactiveTarget2 target2 = hitObject.GetComponent<ReactiveTarget2>();
-                //                if (target2 != null)
-                //                {
-                //                    target2.ReactToHit();
-                //                }
-                //                else
-                //                {
-                //                    ReactiveTarget3 target3 = hitObject.GetComponent<ReactiveTarget3>();
-                //                    if (target3 != null)
-                //                    {
-                //                        target3.ReactToHit();
-                //                    }
-                //                    else
-                //                    {
-                //                        StartCoroutine(SphereIndicator(hit.point));
-                //                    }
-                //                }
-                //}
             }
 		}
 
@@ -75,16 +56,13 @@ public class RayShooter : MonoBehaviour
             LockCursor();
 	}
 
-	private IEnumerator SphereIndicator(Vector3 pos) 
+    private IEnumerator lineDelete() 
     {
-		GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-		sphere.transform.position = pos;
+        yield return new WaitForSeconds(1);
 
-		yield return new WaitForSeconds(1);
-
-		Destroy(sphere);
+		line.SetPosition(0, Vector3.zero);
+        line.SetPosition(1, Vector3.zero);
 	}
-
     void LockCursor()
     {
         if (!cursorLocked)

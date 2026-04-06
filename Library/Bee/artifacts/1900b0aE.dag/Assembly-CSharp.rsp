@@ -468,7 +468,6 @@
 "Assets/Scripts/Fireball.cs"
 "Assets/Scripts/GameManager.cs"
 "Assets/Scripts/MouseLook.cs"
-"Assets/Scripts/MoveByNavMeshAgent.cs"
 "Assets/Scripts/MoveTo.cs"
 "Assets/Scripts/New_Scripts/BallScript.cs"
 "Assets/Scripts/New_Scripts/BallShooter.cs"
@@ -484,6 +483,7 @@
 "Assets/Scripts/Target.cs"
 "Assets/Scripts/UIController.cs"
 "Assets/Scripts/WanderingAI.cs"
+"Assets/Scripts/handAnimation.cs"
 -langversion:9.0
 /deterministic
 /optimize+
